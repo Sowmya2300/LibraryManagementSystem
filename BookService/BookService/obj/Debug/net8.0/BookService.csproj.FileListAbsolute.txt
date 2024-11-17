@@ -163,10 +163,10 @@ C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.BookService.props
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.BookService.props
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\BookServ.C69B37D4.Up2Date
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\BookService.dll
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\refint\BookService.dll
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\BookService.pdb
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\BookService.genruntimeconfig.cache
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\ref\BookService.dll
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\BookService\BookService\obj\Debug\net8.0\BookService.sourcelink.json

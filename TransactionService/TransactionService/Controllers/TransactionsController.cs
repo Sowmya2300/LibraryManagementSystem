@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TransactionService.Data;
 using TransactionService.Models;
+using TransactionService.Services;
 
 namespace TransactionService.Controllers
 {
@@ -10,10 +14,12 @@ namespace TransactionService.Controllers
     public class TransactionsController : ControllerBase
     {
         private readonly TransactionDbContext _context;
+        private readonly IUserService _userService;
 
-        public TransactionsController(TransactionDbContext context)
+        public TransactionsController(TransactionDbContext context, IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         // GET: api/transactions
@@ -29,23 +35,58 @@ namespace TransactionService.Controllers
         {
             var transaction = await _context.Transactions.FindAsync(id);
             if (transaction == null) return NotFound();
-            return transaction;
+
+            // Fetch user data from UserService based on UserId in the transaction
+            var user = await _userService.GetUserByIdAsync(transaction.UserId);
+            if (user == null) return NotFound($"User with ID {transaction.UserId} not found in UserService.");
+
+            // Optionally, include user details in the response
+            return Ok(new
+            {
+                transaction.TransactionId,
+                transaction.BookId,
+                transaction.BorrowedDate,
+                transaction.ReturnedDate,
+                transaction.Status,
+                User = user // User details fetched from UserService
+            });
         }
 
         // POST: api/transactions
         [HttpPost]
-        public async Task<ActionResult<Transaction>> CreateTransaction(Transaction transaction)
+        public async Task<ActionResult<object>> CreateTransaction(Transaction transaction)
         {
+            // Validate user with UserService
+            var user = await _userService.GetUserByIdAsync(transaction.UserId);
+            if (user == null)
+            {
+                return BadRequest("User does not exist.");
+            }
+
+            // Add transaction to the database
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetTransaction), new { id = transaction.TransactionId }, transaction);
+
+            // Return the transaction along with user details
+            var response = new
+            {
+                Transaction = transaction,
+                UserDetails = user
+            };
+
+            return CreatedAtAction(nameof(GetTransaction), new { id = transaction.TransactionId }, response);
         }
+
 
         // PUT: api/transactions/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, Transaction transaction)
         {
             if (id != transaction.TransactionId) return BadRequest();
+
+            // Validate the UserId with UserService before updating the transaction
+            var user = await _userService.GetUserByIdAsync(transaction.UserId);
+            if (user == null) return BadRequest($"Invalid UserId: {transaction.UserId}. User not found.");
 
             _context.Entry(transaction).State = EntityState.Modified;
             try
