@@ -170,3 +170,9 @@ C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\o
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\obj\Debug\net8.0\TransactionService.genruntimeconfig.cache
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\obj\Debug\net8.0\ref\TransactionService.dll
 C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\obj\Debug\net8.0\TransactionService.sourcelink.json
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\bin\Debug\net8.0\Microsoft.Extensions.Configuration.dll
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\bin\Debug\net8.0\Microsoft.Extensions.Configuration.Binder.dll
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.dll
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\bin\Debug\net8.0\Microsoft.Extensions.Http.dll
+C:\Users\sowmi\OneDrive\Desktop\SS Assgn\TransactionService\TransactionService\bin\Debug\net8.0\Microsoft.Extensions.Options.ConfigurationExtensions.dll

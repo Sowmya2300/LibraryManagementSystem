@@ -47,41 +47,64 @@ namespace LibraryManagementSystem.Controllers
 			_context.Books.Add(book);
 			await _context.SaveChangesAsync();
 
-			return CreatedAtAction(nameof(GetBooks), new { id = book.Id }, book);
+            var response = new
+            {
+                status = "success",
+                message = "Book added successfully.",
+                data = book
+            };
+
+            return CreatedAtAction(nameof(GetBooks), new { id = book.Id }, book);
 		}
 
-		// PUT: api/books/{id}
-		[HttpPut("{id}")]
-		public async Task<IActionResult> UpdateBook(int id, Book book)
-		{
-			if (id != book.Id)
-			{
-				return BadRequest();
-			}
+        // PUT: api/books/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBook(int id, Book book)
+        {
+            if (id != book.Id)
+            {
+                return BadRequest(new { status = "error", message = "Book ID mismatch." });
+            }
 
-			_context.Entry(book).State = EntityState.Modified;
+            var existingBook = await _context.Books.FindAsync(id);
+            if (existingBook == null)
+            {
+                return NotFound(new { status = "error", message = "Book not found." });
+            }
 
-			try
-			{
-				await _context.SaveChangesAsync();
-			}
-			catch (DbUpdateConcurrencyException)
-			{
-				if (!_context.Books.Any(b => b.Id == id))
-				{
-					return NotFound();
-				}
-				else
-				{
-					throw;
-				}
-			}
+            // Update the book details
+            existingBook.Title = book.Title;
+            existingBook.Author = book.Author;
+            existingBook.YearPublished = book.YearPublished;
+            existingBook.Genre = book.Genre;
 
-			return NoContent();
-		}
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Books.Any(b => b.Id == id))
+                {
+                    return NotFound(new { status = "error", message = "Book not found during update." });
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-		// DELETE: api/books/{id}
-		[HttpDelete("{id}")]
+            return Ok(new
+            {
+                status = "success",
+                message = "Book updated successfully.",
+                data = existingBook
+            });
+        }
+
+
+        // DELETE: api/books/{id}
+        [HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteBook(int id)
 		{
 			var book = await _context.Books.FindAsync(id);
@@ -93,7 +116,13 @@ namespace LibraryManagementSystem.Controllers
 			_context.Books.Remove(book);
 			await _context.SaveChangesAsync();
 
-			return NoContent();
+            var response = new
+            {
+                status = "success",
+                message = "Book deleted successfully.",
+            };
+
+            return NoContent();
 		}
 	}
 }

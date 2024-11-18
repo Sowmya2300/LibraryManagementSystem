@@ -20,6 +20,12 @@ internal class Program
             client.Timeout = TimeSpan.FromSeconds(30);
         });
 
+        // Add HttpClient service for communication with BookService
+        builder.Services.AddHttpClient<IBookService, BookService>(client =>
+        {
+            client.BaseAddress = new Uri("http://localhost:5070"); // Replace with actual BookService URL
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();

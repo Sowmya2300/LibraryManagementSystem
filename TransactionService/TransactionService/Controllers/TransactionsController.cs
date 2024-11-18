@@ -15,11 +15,13 @@ namespace TransactionService.Controllers
     {
         private readonly TransactionDbContext _context;
         private readonly IUserService _userService;
+        private readonly IBookService _bookService;
 
-        public TransactionsController(TransactionDbContext context, IUserService userService)
+        public TransactionsController(TransactionDbContext context, IUserService userService, IBookService bookService)
         {
             _context = context;
             _userService = userService;
+            _bookService = bookService;
         }
 
         // GET: api/transactions
@@ -31,16 +33,20 @@ namespace TransactionService.Controllers
 
         // GET: api/transactions/{id}
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
+        public async Task<ActionResult> GetTransaction(int id)
         {
             var transaction = await _context.Transactions.FindAsync(id);
-            if (transaction == null) return NotFound();
+            if (transaction == null) return NotFound("Transaction not found.");
 
             // Fetch user data from UserService based on UserId in the transaction
             var user = await _userService.GetUserByIdAsync(transaction.UserId);
             if (user == null) return NotFound($"User with ID {transaction.UserId} not found in UserService.");
 
-            // Optionally, include user details in the response
+            // Fetch book data from BookService based on BookId in the transaction
+            var book = await _bookService.GetBookByIdAsync(transaction.BookId);
+            if (book == null) return NotFound($"Book with ID {transaction.BookId} not found in BookService.");
+
+            // Return transaction details along with user and book information
             return Ok(new
             {
                 transaction.TransactionId,
@@ -48,30 +54,66 @@ namespace TransactionService.Controllers
                 transaction.BorrowedDate,
                 transaction.ReturnedDate,
                 transaction.Status,
-                User = user // User details fetched from UserService
+                UserDetails = user,   // User details fetched from UserService
+                BookDetails = book    // Book details fetched from BookService
             });
         }
+
 
         // POST: api/transactions
         [HttpPost]
         public async Task<ActionResult<object>> CreateTransaction(Transaction transaction)
         {
-            // Validate user with UserService
+            // Initialize validation flags
+            bool isUserValid = true;
+            bool isBookValid = true;
+
+            // Validate user
             var user = await _userService.GetUserByIdAsync(transaction.UserId);
-            if (user == null)
+            if (user == null) isUserValid = false;
+
+            // Validate book
+            var book = await _bookService.GetBookByIdAsync(transaction.BookId);
+            if (book == null) isBookValid = false;
+
+            // Handle validation results
+            if (!isUserValid && !isBookValid)
             {
-                return BadRequest("User does not exist.");
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "Both user and book do not exist."
+                });
+            }
+            else if (!isUserValid)
+            {
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "User does not exist."
+                });
+            }
+            else if (!isBookValid)
+            {
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "Book does not exist."
+                });
             }
 
-            // Add transaction to the database
+            // Add transaction
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
 
-            // Return the transaction along with user details
+            // Return transaction along with user and book details
             var response = new
             {
+                status = "success",
+                message = "Transaction created successfully.",
                 Transaction = transaction,
-                UserDetails = user
+                UserDetails = user,
+                BookDetails = book
             };
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.TransactionId }, response);
@@ -82,35 +124,111 @@ namespace TransactionService.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTransaction(int id, Transaction transaction)
         {
-            if (id != transaction.TransactionId) return BadRequest();
+            if (id != transaction.TransactionId)
+            {
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "Transaction ID mismatch."
+                });
+            }
 
-            // Validate the UserId with UserService before updating the transaction
+            // Initialize validation flags
+            bool isUserValid = true;
+            bool isBookValid = true;
+
+            // Validate user
             var user = await _userService.GetUserByIdAsync(transaction.UserId);
-            if (user == null) return BadRequest($"Invalid UserId: {transaction.UserId}. User not found.");
+            if (user == null) isUserValid = false;
 
+            // Validate book
+            var book = await _bookService.GetBookByIdAsync(transaction.BookId);
+            if (book == null) isBookValid = false;
+
+            // Handle validation results
+            if (!isUserValid && !isBookValid)
+            {
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "Both user and book do not exist."
+                });
+            }
+            else if (!isUserValid)
+            {
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "User does not exist."
+                });
+            }
+            else if (!isBookValid)
+            {
+                return BadRequest(new
+                {
+                    status = "error",
+                    message = "Book does not exist."
+                });
+            }
+
+            // Update transaction
             _context.Entry(transaction).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!_context.Transactions.Any(e => e.TransactionId == id)) return NotFound();
+                if (!_context.Transactions.Any(e => e.TransactionId == id))
+                {
+                    return NotFound(new
+                    {
+                        status = "error",
+                        message = "Transaction not found."
+                    });
+                }
                 throw;
             }
-            return NoContent();
+
+            // Return updated transaction along with user and book details
+            var response = new
+            {
+                status = "success",
+                message = "Transaction updated successfully.",
+                Transaction = transaction,
+                UserDetails = user,
+                BookDetails = book
+            };
+
+            return Ok(response);
         }
+
+
 
         // DELETE: api/transactions/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
             var transaction = await _context.Transactions.FindAsync(id);
-            if (transaction == null) return NotFound();
+            if (transaction == null)
+            {
+                return NotFound(new
+                {
+                    status = "error",
+                    message = "Transaction not found."
+                });
+            }
 
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
-            return NoContent();
+
+            return Ok(new
+            {
+                status = "success",
+                message = "Transaction deleted successfully."
+            });
         }
+
     }
 }

@@ -1,37 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\sowmi\\OneDrive\\Desktop\\SS Assgn\\BookService\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{4DD00AD7-C1C1-43DC-8CEF-FFD6C0B80507}|BookService\\BookService.csproj|c:\\users\\sowmi\\onedrive\\desktop\\ss assgn\\bookservice\\bookservice\\controllers\\bookscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4DD00AD7-C1C1-43DC-8CEF-FFD6C0B80507}|BookService\\BookService.csproj|solutionrelative:bookservice\\controllers\\bookscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "BooksController.cs",
-              "DocumentMoniker": "C:\\Users\\sowmi\\OneDrive\\Desktop\\SS Assgn\\BookService\\BookService\\Controllers\\BooksController.cs",
-              "RelativeDocumentMoniker": "BookService\\Controllers\\BooksController.cs",
-              "ToolTip": "C:\\Users\\sowmi\\OneDrive\\Desktop\\SS Assgn\\BookService\\BookService\\Controllers\\BooksController.cs",
-              "RelativeToolTip": "BookService\\Controllers\\BooksController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAowCQAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-16T11:44:50.154Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }
