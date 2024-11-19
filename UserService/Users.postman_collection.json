@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "3be1af44-c4e5-4f2a-9c2d-5e415af4f387",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38224627"
+	},
+	"item": [
+		{
+			"name": "Get Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5273/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5273",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\": \"Summa\",\r\n  \"lastName\": \"User\",\r\n  \"email\": \"summauser@example.com\",\r\n  \"password\": \"password123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5273/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5273",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users By ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5273/api/users/10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5273",
+					"path": [
+						"api",
+						"users",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Users By ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 12,\r\n  \"firstName\": \"Summaupdated\",\r\n  \"lastName\": \"user\",\r\n  \"email\": \"summauserupdated@example.com\",\r\n  \"password\": \"newpassword123updated\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5273/api/users/12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5273",
+					"path": [
+						"api",
+						"users",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Users",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5273/api/users/12",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5273",
+					"path": [
+						"api",
+						"users",
+						"12"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
